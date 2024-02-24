@@ -1,0 +1,15 @@
+<!-- THE CONTENT HEADING -->
+<% if (title) { %>
+    <div id="CarHeader">
+  <h1><%= title %></h1>
+</div>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+
+<!-- MESSAGE BLOCK -->
+<%# messages() %>
+
+<!-- INVENTORY ITEMS DISPLAY -->
+<%- carInfo %>
