@@ -221,7 +221,6 @@ fieldset{
 }
 form{
   background-color: rgb(19, 143, 165);
-  width: 75%;
   margin: 0 auto;
 }
 form label, p{
@@ -341,5 +340,8 @@ textarea:invalid{
   .cars ul li img{
     width: auto;
     padding-top: 10px;
+  }
+  .addInventory{
+    margin-right: 50px;
   }
 }
