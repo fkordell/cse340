@@ -338,4 +338,8 @@ textarea:invalid{
     display: flex;
     flex-direction: column;
   }
+  .cars ul li img{
+    width: auto;
+    padding-top: 10px;
+  }
 }
