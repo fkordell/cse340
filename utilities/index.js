@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const acctModel = require("../models/account-model")
 const Util = {}
 require("dotenv").config()
 
@@ -84,6 +85,21 @@ Util.buildVehicleInformation = async function(vehicleData){
     carInfo += '<p class="notice"> Sorry, there is no information about this vehicle. </p>';
   }
   return carInfo;
+}
+
+/* **************************************
+* build form inventory
+* ************************************ */
+Util.addInventoryForm = async function (req, res, next) {
+  let data = await invModel.getClassifications()
+  let form = '<select id="newClass" name="classification_id" required >'
+  form += '<option value =""> Please select a classification </option>'
+  data.rows.forEach((row) => {
+    form += '<option value="'+row.classification_id + '">'
+    + row.classification_name + '</option>'
+  })
+  form += '</select>'
+  return form
 }
 
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)

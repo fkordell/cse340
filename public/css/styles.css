@@ -183,6 +183,10 @@ h3{
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+.CarSection img{
+  padding: 10px;
+  margin-top: 15px;
+}
 h2{
   font-weight: 900;
 }
@@ -193,7 +197,74 @@ h3{
 footer{
   line-height: 5px;
 }
-
+fieldset{
+  display: flex;
+  flex-direction: column;
+}
+#loginForm a{
+  color: yellow;
+}
+#loginForm a:hover{
+  color: white;
+}
+.management a{
+  display: flex;
+  flex-wrap: wrap;
+  line-height:30px;
+  color: black;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: center;
+}
+.management a:hover{
+  color: navy;
+  transform: scale(1.1) translate(5%, 5%);
+}
+form{
+  background-color: rgb(19, 143, 165);
+  width: 75%;
+  margin: 0 auto;
+}
+form label, p{
+  color: black;
+  padding: 5px;
+}
+form label{
+  margin-bottom: 0;
+}
+form input{
+  margin-top: 0;
+  color: black;
+}
+form ::-webkit-input-placeholder{
+  color: white;
+}
+form span{
+  color: yellow;
+  padding: 5px;
+  font-size: 18px;
+}
+form button{
+  width: 50%;
+  font-size: 18px;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: white;
+}
+form button:hover{
+  background-color: yellow;
+}
+input:valid{
+  background-color: lightgreen;
+}
+input:invalid{
+  background-color: lightcoral;
+}
+textarea:valid{
+  background-color: lightgreen;
+}
+textarea:invalid{
+  background-color: lightcoral;
+}
 
 
 
