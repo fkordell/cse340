@@ -120,10 +120,10 @@ validate.invRules = () => {
     body("classifcation_id")
     .trim()
     .escape()
-    .custom(async (classifcation_id) =>{
-        const classExists = await invModel.checkClass(classifcation_id)
+    .custom(async (classification_id) =>{
+        const classExists = await invModel.checkClass(classification_id)
         if(classExists){
-            throw new error("classifcation does not exist")
+            throw new error("classification does not exist")
         }
     })
     ]
@@ -147,12 +147,45 @@ validate.checkInvData = async (req, res, next) => {
         inv_make,
         inv_model,
         inv_description,
-        inv_image, inv_thumbnail,
+        inv_image, 
+        inv_thumbnail,
         inv_price,
         inv_year,
         inv_miles,
         inv_color,
         classification_id
+      })
+      return
+    }
+    next()
+  }
+
+  /* ******************************
+ * Check INV data and return errors or continue to registration
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+    const inv_id = parseInt(req.params.inv_id)
+    const {inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color, classification_id} = req.body
+    let errors = []
+    let classificationSelect = await utilities.addInventoryForm(classification_id)
+    errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      let nav = await utilities.getNav()
+      res.render("inventory/edit-inv", {
+        errors,
+        title: "Edit" + inv_make + inv_model,
+        classificationSelect : classificationSelect,
+        nav,
+        inv_make,
+        inv_model,
+        inv_description,
+        inv_image, 
+        inv_thumbnail,
+        inv_price,
+        inv_year,
+        inv_miles,
+        inv_color,
+        inv_id
       })
       return
     }

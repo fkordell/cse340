@@ -15,10 +15,10 @@
       <% } %>
 
     <div class="addInventory">
-        <form id="addClassForm" action="/inv/add-inventory" method="post">
+        <form id="updateForm" action="/inv/update" method="post">
           <fieldset>
               <label for="newClass">Classification:</label>
-              <%- form %>
+              <%- classificationSelect %>
                 <label for="make">Make:</label>
                 <input type="text" id="make" name="inv_make" minlength="3" required placeholder="min of 3 characters" value="<%= locals.inv_make %>">
  
@@ -26,7 +26,7 @@
                 <input type="text" id="model" name="inv_model" minlength="3" required placeholder="min of 3 characters"  value="<%= locals.inv_model %>">
 
                 <label for="description">Description:</label>
-                <textarea id="description" name="inv_description" rows="4" cols="50" required placeholder="please give a short description of the vehicle"></textarea>
+                <textarea id="inv_description" name="inv_description" rows="4" cols="50" required placeholder="please give a short description of the vehicle"><%= locals.inv_description %></textarea>
 
                 <label for="imagePath">Image Path:</label>
                 <span>If no image use this path /images/vehicles/no-image.jpg</span>
@@ -49,7 +49,9 @@
                 <label for="color">Color:</label>
                 <input type="text" id="color" name="inv_color" required  value="<%= locals.inv_color %>">
 
-                <button type="submit" value="Add Vehicle"> Submit</button>
+                <button type="submit" disabled value="Update Vehicle">Update</button>
+                <input type="hidden" name="inv_id"<% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %> >
             </fieldset>
         </form>
     </div>
+    <script src="/js/inv-update.js"></script>

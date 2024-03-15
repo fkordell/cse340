@@ -25,5 +25,13 @@ router.get("/add-inventory", utilities.handleErrors(invController.buildInv.newIn
 router.post("/", invValidate.classRules(), invValidate.checkClassData, utilities.handleErrors(invController.addClass.addNewClass))
 //route to post new inventory
 router.post("/add-inventory", invValidate.invRules(), invValidate.checkInvData, utilities.handleErrors(invController.addInv.newInv))
+//route to work with inventoey.js file
+router.get("/getInventory/:classification_id", utilities.handleErrors(invCont.getInventoryJSON))
+//route to edit inventory
+router.get("/edit/:inv_id", utilities.handleErrors(invCont.editInv))
+router.post("/update/",invValidate.invRules(), invValidate.checkUpdateData, invController.updateInv.updateInventory)
+// New Route to delete an inventory item
+router.get("/delete/:inv_id", utilities.handleErrors(invCont.deleteInv))
+router.post("/delete/", utilities.handleErrors(invCont.deleteInventory))
 
 module.exports = router;
