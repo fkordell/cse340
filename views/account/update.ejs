@@ -1,0 +1,50 @@
+<!-- THE CONTENT HEADING -->
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+
+<!-- Messages or error mesages  -->
+<%- messages() %>
+
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+
+
+<form id="updateAcc" action="/account/updateAccount" method="post">
+    <h2>Update first name, last name and email</h2>
+    <label for="fName"> First Name:</label> 
+    <input type="text" id="fname" name="account_firstname" value="<%- locals.accountData.account_firstname %>">
+
+    <label for="lname"> Last Name:</label>
+    <input type="text" id="lname" name="account_lastname"  value="<%- locals.accountData.account_lastname %>">
+
+    <label for="accEmail">Email</label>
+    <input type="text" id="accEmail" name="account_email" value="<%- locals.accountData.account_email %>">
+
+    <button type="submit" value="Update account"> Submit</button>
+    <input type="hidden" name="account_id"<% if(locals.accountData) { %> value="<%= locals.accountData.account_id %>" <% } %> >
+  
+  </form>
+
+<form id="passwordChange" action="/account/updatePassword" method="post">
+    <h2>Update password</h2>
+    <label for="loginPassword">Password:</label>
+    <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</span> 
+    <input type="password" id="loginPassword" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" placeholder="please include UPPER, lower, number and special character">
+    <span id="pswdBtnLogin"> Show Password</span>
+    
+    <button type="submit" value="change password"> Submit</button>
+
+    <input type="hidden" name="account_id"<% if(locals.accountData) { %> value="<%= locals.accountData.account_id %>" <% } %> >
+</form>
+
+<script src="../../js/script.js"></script>

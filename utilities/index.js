@@ -1,5 +1,5 @@
 const invModel = require("../models/inventory-model")
-const acctModel = require("../models/account-model")
+const accModel = require("../models/account-model")
 const jwt = require("jsonwebtoken")
 const Util = {}
 require("dotenv").config()
@@ -113,12 +113,20 @@ Util.checkJWTToken = (req, res, next) => {
     process.env.ACCESS_TOKEN_SECRET,
     function (err, accountData) {
      if (err) {
-      req.flash("Please log in")
+      req.flash("notice", "Please log in")
       res.clearCookie("jwt")
       return res.redirect("/account/login")
      }
      res.locals.accountData = accountData
      res.locals.loggedin = 1
+     if (res.locals.accountData.account_type == "Employee" || res.locals.accountData.account_type =="Admin")
+     {
+       res.locals.allow = 1;
+
+     }
+     else{
+       res.locals.allow = 0;
+     }
      next()
     })
   } else {
@@ -130,7 +138,66 @@ Util.checkJWTToken = (req, res, next) => {
  *  Check Login
  * ************************************ */
  Util.checkLogin = (req, res, next) => {
+  console.log("Entering checkLogin middleware.");
   if (res.locals.loggedin) {
+    console.log("User is logged in, proceeding to next middleware/route.");
+    next();
+  } else {
+    console.log("User not logged in, redirecting to login page.");
+    req.flash("notice", "Please log in.");
+    return res.redirect("/account/login");
+  }
+}
+
+
+
+ /* ****************************************
+ *  Check if they are allowed or not on a page by account type
+ * ************************************ */
+Util.checkaccountType = (req, res, next) => {
+  if (res.locals.accountData) {
+    if (res.locals.allow) {
+      next()
+    } else {
+    req.flash("notice", "You do not have access to this page.")
+    return res.redirect("/account/")
+    }
+  } else {
+    req.flash("notice", "Please log in")
+    return res.redirect("/account/login")
+  }
+}
+
+/* ****************************************
+ *  Deletes the cookies and jwt
+ * ************************************ */
+Util.deleteJwt = (req, res, next) => {
+  if(req.cookies.jwt){
+    res.clearCookie("jwt", {httpOnly: true})
+    return res.status(403).redirect("/")
+  } else {
+    next()
+  }
+}
+
+/* **************************************
+* build form inventory
+* ************************************ */
+Util.selectAccount = async function (req, res, next) {
+  let data = await accModel.getAccountInfo()
+  let form = '<select id="account" name="message_to" required >'
+  
+  form += '<option value =""> Select a recipient </option>'
+  data.rows.forEach((row) => {
+    form += '<option value="'+row.account_id + '">'
+    + row.account_firstname + '</option>'
+  })
+  form += '</select>'
+  return form
+}
+
+Util.checkAllLogin = (req, res, next) => {
+  if (res.locals.accountData) {
     next()
   } else {
     req.flash("notice", "Please log in.")

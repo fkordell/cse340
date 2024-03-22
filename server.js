@@ -9,7 +9,6 @@ const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
-const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const invController = require("./controllers/invController")
 const inventoryRoute = require("./routes/inventoryRoute")
@@ -18,11 +17,9 @@ const errorRoute = require("./routes/errorRoute")
 const accountRoute  = require('./routes/accountRoute')
 const session = require("express-session")
 const pool = require('./database/')
+const routes = require("./routes/static")
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
-
-
-app.use(express.static('public')); 
 
 /* ***********************
  * Middleware
@@ -61,18 +58,18 @@ app.set("layout", "./layouts/layout")
 /* ***********************
  * Routes
  *************************/
-app.use(static)
+app.use(utilities.handleErrors(routes))
 
 //Index route 
-app.get("/", baseController.buildHome)
+app.get("/", utilities.handleErrors(baseController.buildHome))
 
 // Inventory routes
-app.use("/inv", inventoryRoute)
+app.use("/inv", utilities.handleErrors(inventoryRoute))
 
 app.get('/trigger-error', utilities.handleErrors(invController));
 
 //Account Route 
-app.use("/account", accountRoute)
+app.use("/account", utilities.handleErrors(accountRoute))
 
 app.use(errorRoute)
 app.use(async (req, res, next) => {
