@@ -77,14 +77,12 @@ validate.invRules = () => {
     // For inv_image
     body("inv_image")
     .trim()
-    .escape()
     .isLength({min: 9})
     .withMessage('A valid vehicle IMAGE PATH is required. Please have it more than 9 characters in this format: /images/vehicles/carname.jpg'),
 
     // For inv_tn
     body("inv_thumbnail")
     .trim()
-    .escape()
     .isLength({min: 9})
     .withMessage('A valid vehicle IMAGE PATH is required. Please have it more than 9 characters in this format: /images/vehicles/carname-tn.jpg'),
 

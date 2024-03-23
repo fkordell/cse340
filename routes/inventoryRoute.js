@@ -14,17 +14,17 @@ router.get("/type/:classificationId", utilities.handleErrors(invCont.buildByClas
 //route to build iventory by inventory id
 router.get("/detail/:inventoryId",utilities.handleErrors(invInv.buildByInventory));
 //route to add classification or inventory
-router.get("/", utilities.handleErrors(management.addCar));
+router.get("/", utilities.checkaccountType, utilities.handleErrors(management.addCar));
 //route to add classification
-router.get("/inv/add-classification", utilities.handleErrors(invController.buildClass.newClass))
-router.get("/add-classification", utilities.handleErrors(invController.buildClass.newClass))
+router.get("/inv/add-classification", utilities.checkaccountType, utilities.handleErrors(invController.buildClass.newClass))
+router.get("/add-classification", utilities.checkaccountType, utilities.handleErrors(invController.buildClass.newClass))
 //route to add new inventory
-router.get("/inv/add-inventory", utilities.handleErrors(invController.buildInv.newInv))
-router.get("/add-inventory", utilities.handleErrors(invController.buildInv.newInv))
+router.get("/inv/add-inventory", utilities.checkaccountType, utilities.handleErrors(invController.buildInv.newInv))
+router.get("/add-inventory", utilities.checkaccountType, utilities.handleErrors(invController.buildInv.newInv))
 //route to post new classification
-router.post("/", invValidate.classRules(), invValidate.checkClassData, utilities.handleErrors(invController.addClass.addNewClass))
+router.post("/", utilities.checkaccountType, invValidate.classRules(), invValidate.checkClassData, utilities.handleErrors(invController.addClass.addNewClass))
 //route to post new inventory
-router.post("/add-inventory", invValidate.invRules(), invValidate.checkInvData, utilities.handleErrors(invController.addInv.newInv))
+router.post("/add-inventory", utilities.checkaccountType, invValidate.invRules(), invValidate.checkInvData, utilities.handleErrors(invController.addInv.newInv))
 //route to work with inventoey.js file
 router.get("/getInventory/:classification_id", utilities.handleErrors(invCont.getInventoryJSON))
 //route to edit inventory
