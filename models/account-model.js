@@ -94,5 +94,13 @@ async function getAccountInfo(){
   return await pool.query("SELECT * FROM public.account")
 }
 
+/* ***************************
+ *  Get all account type data
+ * ************************** */
+async function getAccountType(){
+  return await pool.query("SELECT * FROM public.account ORDER BY account_type")
+}
 
-module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, getAccountInfo, updateAcc, updatePassword}
+
+
+module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, getAccountInfo, updateAcc, updatePassword, getAccountType}

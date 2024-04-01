@@ -33,4 +33,21 @@ router.post("/updateAccount", regValidate.checkAccountUpdate(), regValidate.chec
 router.post("/updatePassword", regValidate.passwordValidation(), regValidate.checkNewData, utilities.handleErrors((accountController.updatePassword)))
 
 
+//still confused
+//need controller info
+//need help
+
+//route to post to update the account type
+router.post("/updateType", utilities.handleErrors(accountController.checkAccountUpdate))
+
+//route to work with accountUpdate.js file
+//router.get("/getInventory/:classification_id", utilities.handleErrors(invCont.getInventoryJSON))
+//route to edit account user info
+//router.get("/edit/:inv_id", utilities.handleErrors(invCont.editInv))
+//router.post("/update/",invValidate.invRules(), invValidate.checkUpdateData, invController.updateInv.updateInventory)
+// New Route to delete an account user
+//router.get("/delete/:inv_id", utilities.handleErrors(invCont.deleteInv))
+//router.post("/delete/", utilities.handleErrors(invCont.deleteInventory))
+
+
 module.exports = router;
