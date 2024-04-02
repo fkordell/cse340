@@ -257,5 +257,20 @@ async function updatePassword(req, res, next) {
   }
 
 }
+
+/* ***************************
+ *  Adds to the updateAccountType page
+ * ************************** */
+async function updateAccountType (req, res, next) {
+  let nav = await utilities.getNav()
+  const accountTypeSelect = await utilities.updateAccountType()
+  res.render("./account/updateAccountType", {
+    nav,
+    title: "Update Account Information & Account Type",
+    message: null,
+    errors: null,
+    accountTypeSelect
+  })
+}
   
-  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword }
+  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword, updateAccountType }

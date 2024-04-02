@@ -103,6 +103,24 @@ Util.addInventoryForm = async function (req, res, next) {
   return form
 }
 
+
+/* **************************************
+* build form account
+* ************************************ */
+Util.updateAccountType = async function (req, res, next) {
+  let data = await accModel.getAccountType()
+  let form = '<select id="newType" name="account_id" required >'
+  form += '<option value =""> Please select an account type </option>'
+  data.rows.forEach((row) => {
+    form += '<option value="'+row.account_id + '">'
+    + row.account_type + '</option>'
+  })
+  form += '</select>'
+  return form
+}
+
+
+
 /* ****************************************
 * Middleware to check token validity
 **************************************** */
