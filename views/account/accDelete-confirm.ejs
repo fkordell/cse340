@@ -1,0 +1,37 @@
+<!-- THE CONTENT HEADING -->
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+
+<!-- Messages or error mesages  -->
+<%- messages() %>
+
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<!-- forms to add a new inventory -->
+
+<form id="deleteAcc" action="/account/delete" method="post">
+
+    <label for="accountFirstName">First Name</label>
+    <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">
+    
+    <label for="accountLastName">Last Name</label>
+    <input type="text" name="account_lastname" id="accountLastname" required value="<%= locals.account_lastname %>">
+    
+    <label for="regEmail">Email Address:</label><br>
+    <input type="email" id="regEmail" name="account_email" required value="<%= locals.account_email %>"><br>
+    
+    <span>Confirm Account Deletion- The delete is permanent.</span>
+    <button type="submit" value="Delete Account"> Submit</button>
+    <input type="hidden" name="account_id"<% if(locals.account_id) { %> value="<%= locals.account_id %>" <% } %> >
+
+</form>

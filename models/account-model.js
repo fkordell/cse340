@@ -98,9 +98,25 @@ async function getAccountInfo(){
  *  Get all account type data
  * ************************** */
 async function getAccountType(){
-  return await pool.query("SELECT * FROM public.account ORDER BY account_type")
+  return await pool.query("SELECT DISTINCT account_type FROM public.account")
+}
+
+ /* ***************************
+ *  Get all account info and account_id and name
+ * ************************** */
+ async function getAccountByIdentityId(account_id){
+  try {
+    const accountData = await pool.query(
+      `SELECT * FROM public.account
+      WHERE account_id = $1`,
+      [account_id]
+    )
+    return accountData.rows
+    } catch (error) {
+      console.error("getAccountByIdentityId " + error)
+  }
 }
 
 
 
-module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, getAccountInfo, updateAcc, updatePassword, getAccountType}
+module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, getAccountInfo, updateAcc, updatePassword, getAccountType, getAccountByIdentityId }
