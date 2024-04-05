@@ -1,5 +1,24 @@
 'use strict'
 
+ 
+ // Get a list of items in account based on the account_id 
+document.addEventListener('DOMContentLoaded', function() {
+    const accountTypeSelect = document.querySelector("#accountTypeSelect");
+    accountTypeSelect.addEventListener("change", function() {
+      const account_type = this.value;
+      fetch(`/account/getAccountsByType/${account_type}`)
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not OK');
+          return response.json();
+        })
+        .then(data => {
+        console.log("Fetched data:", data); 
+        buildAccountTypeList(data);
+        })
+        .catch(error => console.error('There was a problem:', error));
+    });
+  });
+  
  // Build account type items into HTML table components and inject into DOM 
  function buildAccountTypeList(data) { 
     let updateAccTypeDisplay = document.getElementById("updateAccTypeDisplay"); 
