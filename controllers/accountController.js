@@ -276,6 +276,12 @@ async function getAccountsByType(req, res) {
  *  This is the function to update the account type
  * ************************** */
 
+//pumehana, merge conflict resolved by commenting out this part
+//async function updateAccountType (req, res, next) {
+  //let nav = await utilities.getNav()
+  //const accountTypeSelect = await utilities.updateAccountType()
+  //res.render("account/updateAccountType", {
+
 async function updateAccountTypeInfo(req, res) {
   try {
     let nav = await utilities.getNav();
@@ -293,6 +299,120 @@ async function updateAccountTypeInfo(req, res) {
   } catch (error) {
     console.error("Error during account type update:", error);
     res.status(500).send("Server error");
+  }
+
+
+
+
+// async function updateAccountTypeInfo(req, res, next) {
+//   let nav = await utilities.getNav();
+//   const { account_id, account_type } = req.body;
+//   const updateResult = await accountModel.updateAccountType(
+//     account_id,
+//     account_type,
+//   );
+
+//   if(updateResult){
+//     utilities.deleteJwt
+//     const accountData = await accountModel.getAccountById(account_id)
+//     accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 3600 * 1000})
+//     res.cookie("jwt", accessToken, {httpOnly: true})
+//     req.flash("notice", `Congrats ${account_firstname}, the account type was successfully updated! `)
+//     res.redirect("/account/")
+//   }
+//   else{
+//     const accountData = await accountModel.getAccountById(account_id)
+//     req.flash("notice", "Sorry we could not update the account type.")
+//     res.status(501).render("account/update", {
+//     title: "Edit Account Type",
+//     nav,
+//     errors: null,
+//     account_type : accountData.account_type,
+//     account_id: account_id,
+//     })
+//   }
+// }
+
+
+async function updateAccountType(req, res) {
+  const account_id = parseInt(req.params.account_id);
+  let nav = await utilities.getNav();
+  const accountData = await accountModel.getAccountById(account_id);
+  if (!accountData) {
+      throw new Error('Account not found');
+  }
+  const accountTypeSelect = await utilities.updateAccountType();
+  const accountName = `${accountData.account_firstname} ${accountData.account_lastname}`;
+  res.render("./account/updateAccountType", {
+    title: "Edit " + accountName,
+    nav, 
+    accountTypeSelect: accountTypeSelect,
+    errors: null,
+  })
+}
+
+
+/* ***************************
+ *  Build delete account view
+ * ************************** */
+async function accountDelete (req, res, next) {
+  const account_id = parseInt(req.params.account_id)
+  let nav = await utilities.getNav()
+
+  const accountData = await accountModel.getAccountByIdentityId(account_id)
+  const accountTypeSelect = await utilities.updateAccountType()
+
+  const accountName = `${accountData[0].account_firstname} ${accountData[0].account_lastname}`
+
+  res.render("./account/delete-confirm", {
+    title: "Delete " + accountName,
+    nav,
+    accountTypeSelect: accountTypeSelect,
+    errors: null,
+    account_id: accountData[0].account_id,
+    account_firstname: accountData[0].account_firstname,
+    account_lastname: accountData[0].account_lastname,
+    account_email: accountData[0].account_email,
+    account_password: accountData[0].account_password,
+    account_id_id: accountData[0].account_id
+  })
+}
+
+
+/* ***************************
+ *  Update Account Data after deletion
+ * ************************** */
+async function updateAfterDelete (req, res, next) {
+  let nav = await utilities.getNav()
+  const {
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+  } = req.body
+
+  const updateResult = await updateAfterDelete(
+    account_id,
+  )
+
+  if (updateResult) {
+    const accountName = account_firstname + " " + account_lastname
+    req.flash("notice", `The account for ${accountName} was successfully deleted.`)
+    res.redirect("/account/")
+  } else {
+    const accountTypeSelect = await utilities.updateAccountType()
+    const accountName = `${account_firstname} ${account_lastname}`
+    req.flash("notice", "Sorry, the deletion failed.")
+    res.status(501).render("account/delete-confirm", {
+    title: "Delete " + accountName,
+    nav,
+    accountTypeSelect: accountTypeSelect,
+    errors: null,
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+    })
   }
 }
 
@@ -346,7 +466,71 @@ async function updateAccountType(req, res) {
 }
 
 
+/* ***************************
+ *  Build delete account view
+ * ************************** */
+async function accountDelete (req, res, next) {
+  const account_id = parseInt(req.params.account_id)
+  let nav = await utilities.getNav()
+
+  const accountData = await accountModel.getAccountByIdentityId(account_id)
+  const accountTypeSelect = await utilities.updateAccountType()
+
+  const accountName = `${accountData[0].account_firstname} ${accountData[0].account_lastname}`
+
+  res.render("./account/delete-confirm", {
+    title: "Delete " + accountName,
+    nav,
+    accountTypeSelect: accountTypeSelect,
+    errors: null,
+    account_id: accountData[0].account_id,
+    account_firstname: accountData[0].account_firstname,
+    account_lastname: accountData[0].account_lastname,
+    account_email: accountData[0].account_email,
+    account_password: accountData[0].account_password,
+    account_id_id: accountData[0].account_id
+  })
+}
 
 
+/* ***************************
+ *  Update Account Data after deletion
+ * ************************** */
+async function updateAfterDelete (req, res, next) {
+  let nav = await utilities.getNav()
+  const {
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+  } = req.body
+
+  const updateResult = await updateAfterDelete(
+    account_id,
+  )
+
+  if (updateResult) {
+    const accountName = account_firstname + " " + account_lastname
+    req.flash("notice", `The account for ${accountName} was successfully deleted.`)
+    res.redirect("/account/")
+  } else {
+    const accountTypeSelect = await utilities.updateAccountType()
+    const accountName = `${account_firstname} ${account_lastname}`
+    req.flash("notice", "Sorry, the deletion failed.")
+    res.status(501).render("account/delete-confirm", {
+    title: "Delete " + accountName,
+    nav,
+    accountTypeSelect: accountTypeSelect,
+    errors: null,
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+    })
+  }
+}
   
-  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword, updateAccountTypeInfo, updateAccountType, getAccountsByType }
+  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword, updateAccountTypeInfo, updateAccountType, getAccountsByType, accountDelete, updateAfterDelete }
+
+
+
