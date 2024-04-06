@@ -51,9 +51,10 @@ router.post("/updateType", utilities.handleErrors(accountController.checkAccount
 //route to edit account user info
 //router.get("/edit/:inv_id", utilities.handleErrors(invCont.editInv))
 //router.post("/update/",invValidate.invRules(), invValidate.checkUpdateData, invController.updateInv.updateInventory)
+
 // New Route to delete an account user
-//router.get("/delete/:inv_id", utilities.handleErrors(invCont.deleteInv))
-//router.post("/delete/", utilities.handleErrors(invCont.deleteInventory))
+router.get("/delete/:account_id", utilities.handleErrors(accountController.accountDelete))
+router.post("/delete/", utilities.handleErrors(accountController.updateAfterDelete))
 
 
 module.exports = router;
