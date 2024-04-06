@@ -4,8 +4,10 @@
  // Get a list of items in account based on the account_id 
 document.addEventListener('DOMContentLoaded', function() {
     const accountTypeSelect = document.querySelector("#accountTypeSelect");
-    accountTypeSelect.addEventListener("change", function() {
+    accountTypeSelect.addEventListener("change", function(e) {
+      console.log(e);
       const account_type = this.value;
+      console.log("Selected account type:", account_type); 
       fetch(`/account/getAccountsByType/${account_type}`)
         .then(response => {
           if (!response.ok) throw new Error('Network response was not OK');

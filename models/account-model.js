@@ -116,19 +116,6 @@ async function getAccountType(){
   // return await pool.query("SELECT * FROM public.account ORDER BY account_type")
 }
 
-//Get an account by its type
-// async function getAccountsByType(account_type) {
-//   try {
-//     const query = 'SELECT * FROM account';
-//     const values = [account_type];
-//     const result = await pool.query(query, values);
-//     return result.rows;
-//   } catch (error) {
-//     console.error('Error querying account by type:', error);
-//     throw error;
-//   }
-// }
-
 async function getAccountsByType(account_type) {
   console.log("Queried account type:", account_type); 
   try {

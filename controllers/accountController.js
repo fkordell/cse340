@@ -153,16 +153,17 @@ async function accountLogin(req, res) {
 async function editAccount(req, res, next) {
   const account_id = parseInt(req.params.account_id);
   let nav = await utilities.getNav();
+  const accountTypeSelect = await utilities.updateAccountType()
   const accountData = await accountModel.getAccountById(account_id);
 
-  if (accountData) {
-    const accountTypesResult = await accountModel.getAccountType();
-    let accountTypeSelect = '<select name="account_type">'; 
-    accountTypesResult.rows.forEach((type) => {
-      let isSelected = type.account_type === accountData.account_type ? ' selected' : '';
-      accountTypeSelect += `<option value="${type.account_type}"${isSelected}>${type.account_type}</option>`;
-    });
-    accountTypeSelect += '</select>';
+  // if (accountData) {
+  //   const accountTypesResult = await accountModel.getAccountType();
+  //   let accountTypeSelect = '<select name="account_type">'; 
+  //   accountTypesResult.rows.forEach((type) => {
+  //     let isSelected = type.account_type === accountData.account_type ? ' selected' : '';
+  //     accountTypeSelect += `<option value="${type.account_type}"${isSelected}>${type.account_type}</option>`;
+  //   });
+  //   accountTypeSelect += '</select>';
 
     res.render("account/update", {
       title: "Edit Account",
@@ -174,14 +175,14 @@ async function editAccount(req, res, next) {
       account_id: account_id,
       accountTypeSelect, 
     });
-  } else {
-    req.flash("notice", "sorry unable to update your information, please try logging in again");
-    res.status(501).render("account/login", {
-      title: "Login",
-      nav,
-      errors: null,
-    });
-  }
+//   } else {
+//     req.flash("notice", "sorry unable to update your information, please try logging in again");
+//     res.status(501).render("account/login", {
+//       title: "Login",
+//       nav,
+//       errors: null,
+//     });
+//   }
 }
 
 
@@ -273,8 +274,9 @@ async function updatePassword(req, res, next) {
 
 
 //This gets  the account by its type
-async function  getAccountsByType(req, res) {
-  const {account_type} = req.params
+async function getAccountsByType(req, res) {
+  console.log("Received account_type in controller:", req.params.account_type);
+  const account_type = req.params.account_type
   console.log("Received account_type in controller:", account_type);
   try {
     const account = await accountModel.getAccountsByType(account_type);

@@ -33,7 +33,7 @@ router.post("/updateAccount", regValidate.checkAccountUpdate(), regValidate.chec
 router.post("/updatePassword", regValidate.passwordValidation(), regValidate.checkNewData, utilities.handleErrors((accountController.updatePassword)))
 
 //route to work with accountUpdate.js file
-router.get("/getAccountsByType/:account_type", utilities.handleErrors(accountController.getAccountsByType));
+router.get("/getAccountsByType/:account_type", utilities.checkaccountType, utilities.handleErrors(accountController.getAccountsByType));
 
 // //route for getting accounts by type
 // router.get("/updateAccountType", accountController.getAccountsByType)

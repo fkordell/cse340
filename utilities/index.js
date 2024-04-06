@@ -112,7 +112,7 @@ Util.updateAccountType = async function (req, res, next) {
   let form = '<select id="accountTypeSelect" name="account_id" required >'
   form += '<option value =""> Please select an account type </option>'
   data.rows.forEach((row) => {
-    form += '<option value="'+row.account_id + '">'
+    form += '<option value="'+row.account_type + '">'
     + row.account_type + '</option>'
   })
   form += '</select>'
