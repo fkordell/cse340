@@ -87,22 +87,6 @@ async function updatePassword(account_id, account_password){
   }
 }
 
-//This will update the account type
-async function updateAccountType(account_id, account_type) {
-  const query = 'UPDATE account SET account_type = $1 WHERE account_id = $2 RETURNING *';
-  const values = [account_type, account_id];
-  console.log("Executing query:", query, "Values:", values);
-  try {
-    const result = await pool.query(query, values);
-    console.log("Database update result:", result.rows);
-    return result.rowCount > 0 ? result.rows[0] : null;  
-  } catch (error) {
-    console.error('Database error:', error);
-    throw error;
-  }
-}
-
-
 /* *****************************
 * Return account data using email address
 * ***************************** */
@@ -115,23 +99,6 @@ async function getAccountInfo(){
  * ************************** */
 async function getAccountType(){
   return await pool.query("SELECT DISTINCT account_type FROM public.account")
-}
-
- /* ***************************
- *  Get all account info and account_id and name
- * ************************** */
- async function getAccountByIdentityId(account_id){
-  try {
-    const accountData = await pool.query(
-      `SELECT * FROM public.account
-      WHERE account_id = $1`,
-      [account_id]
-    )
-    return accountData.rows
-    } catch (error) {
-      console.error("getAccountByIdentityId " + error)
-
-  // return await pool.query("SELECT * FROM public.account ORDER BY account_type")
 }
 
 async function getAccountsByType(account_type) {
@@ -151,9 +118,24 @@ async function getAccountsByType(account_type) {
   }
 }
 
+//This will update the account type
+async function updateAccountType(account_id, account_type) {
+  const query = 'UPDATE account SET account_type = $1 WHERE account_id = $2 RETURNING *';
+  const values = [account_id, account_type];
+  console.log("Executing query:", query, "Values:", values);
+  try {
+    const result = await pool.query(query, values);
+    console.log("Database update result:", result.rows);
+    return result.rowCount > 0 ? result.rows[0] : null;  
+  } catch (error) {
+    console.error('Database error:', error);
+    throw error;
+  }
+}
 
 
 
 
-module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, getAccountInfo, updateAcc, updatePassword, getAccountType, getAccountByIdentityId, updateAccountType, getAccountsByType}
+
+module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, getAccountInfo, updateAcc, updatePassword, getAccountType, updateAccountType, getAccountsByType}
 

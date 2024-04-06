@@ -34,14 +34,16 @@ router.post("/updatePassword", regValidate.passwordValidation(), regValidate.che
 
 //route to work with accountUpdate.js file
 router.get("/getAccountsByType/:account_type", utilities.checkaccountType, utilities.handleErrors(accountController.getAccountsByType));
-
+//route to get account types
 router.get("/updateAccountType/:account_id", utilities.handleErrors(accountController.updateAccountType))
 
-// router.post("/updateAccountType", utilities.handleErrors(accountController.updateAccountTypeInfo))
-router.post("/updateAccountType", (req, res) => {
-    console.log("Request Body:", req.body);
-    res.send("Route is working");
-  });
+//route to update account type in the db
+router.post("/updateAccountType", utilities.handleErrors(accountController.updateAccountType))
 
+//get route to delete an account
+router.get("/delete/:account_id", utilities.handleErrors(accountController.accountDelete))
+
+//route to update the db after deletion
+router.post("/delete/", utilities.handleErrors(accountController.updateAfterDelete))
 
 module.exports = router;

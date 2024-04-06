@@ -22,10 +22,10 @@
 <div class="updateAccountTypeForm">
     <form id="updateAccountForm" action="/account/updateAccountType" method="post">
       <fieldset>
-          <label for="newType">Account Type:</label>
+          <label for="accountTypeSelect">Account Type:</label>
           <%- accountTypeSelect %>
           <button type="submit" disabled value="Update Account">Update</button>
-          <input type="hidden" name="account_id"<% if(locals.account_id) { %> value="<%= locals.account_id %>" <% } %> >
+          <input type="hidden" name="account_id"<% if(locals.account_type) { %> value="<%= locals.account_type %>" <% } %> >
         </fieldset>
     </form>
 </div>

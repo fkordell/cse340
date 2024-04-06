@@ -21,7 +21,7 @@
 
 <form id="updateAcc" action="/account/updateAccount" method="post">
     <h2>Update first name, last name and email</h2>
-    <label for="fName"> First Name:</label> 
+    <label for="fname"> First Name:</label> 
     <input type="text" id="fname" name="account_firstname" value="<%- locals.accountData.account_firstname %>">
 
     <label for="lname"> Last Name:</label>
@@ -40,10 +40,8 @@
     <label for="loginPassword">Password:</label>
     <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</span> 
     <input type="password" id="loginPassword" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" placeholder="please include UPPER, lower, number and special character">
-    <span id="pswdBtnLogin"> Show Password</span>
     
     <button type="submit" value="change password"> Submit</button>
-
     <input type="hidden" name="account_id"<% if(locals.accountData) { %> value="<%= locals.accountData.account_id %>" <% } %> >
 </form>
 
