@@ -300,6 +300,7 @@ async function updateAccountTypeInfo(req, res) {
     console.error("Error during account type update:", error);
     res.status(500).send("Server error");
   }
+}
 
 
 
