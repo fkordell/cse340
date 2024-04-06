@@ -88,18 +88,20 @@ async function updatePassword(account_id, account_password){
 }
 
 //This will update the account type
-async function updateAccountType(account_id, account_type){
+async function updateAccountType(account_id, account_type) {
+  const query = 'UPDATE account SET account_type = $1 WHERE account_id = $2 RETURNING *';
+  const values = [account_type, account_id];
+  console.log("Executing query:", query, "Values:", values);
   try {
-    const sql = "UPDATE public.account SET account_type = $1 WHERE account_id = $2 RETURNING *"
-    const data = await pool.query(sql, [
-      account_type,
-      account_id
-    ])
-    return data.rows[0]
-  } catch(error){
-    console.error ("model " + error)
+    const result = await pool.query(query, values);
+    console.log("Database update result:", result.rows);
+    return result.rowCount > 0 ? result.rows[0] : null;  
+  } catch (error) {
+    console.error('Database error:', error);
+    throw error;
   }
 }
+
 
 /* *****************************
 * Return account data using email address
@@ -131,17 +133,7 @@ async function getAccountsByType(account_type) {
     throw error;
   }
 }
-// async function getAccountsByType(account_type) {
-//   try {
-//     const query = 'SELECT * FROM account';
-//     const result = await pool.query(query);
-//     console.log("Fetched accounts:", result.rows);
-//     return result.rows;
-//   } catch (error) {
-//     console.error('Error querying account by type:', error);
-//     throw error;
-//   }
-// }
+
 
 
 

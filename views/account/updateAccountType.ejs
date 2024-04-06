@@ -19,29 +19,14 @@
 
 
 
-<div class="addInventory">
-    <form id="updateForm" action="/account/update" method="post">
+<div class="updateAccountTypeForm">
+    <form id="updateAccountForm" action="/account/updateAccountType" method="post">
       <fieldset>
           <label for="newType">Account Type:</label>
           <%- accountTypeSelect %>
-          
-          <label for="accountFirstName">First Name</label>
-          <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">
-
-          <label for="accountLastName">Last Name</label>
-          <input type="text" name="account_lastname" id="accountLastname" required value="<%= locals.account_lastname %>">
-
-          <label for="regEmail">Email Address:</label><br>
-          <input type="email" id="regEmail" name="account_email" required value="<%= locals.account_email %>"><br>
-
-          <label for="loginPassword">Password:</label><br>
-          <span>Requirement: 1 UPPER, number, special character, no less than 12 characters.</span>
-          <input type="password" id="loginPassword" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
-          
-
-          <button type="submit" disabled value="Update Vehicle">Update</button>
-          <input type="hidden" name="inv_id"<% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %> >
+          <button type="submit" disabled value="Update Account">Update</button>
+          <input type="hidden" name="account_id"<% if(locals.account_id) { %> value="<%= locals.account_id %>" <% } %> >
         </fieldset>
     </form>
 </div>
-<script src="../../public/js/accountUpdate.js"></script>
+<script src="/js/inv-update.js"></script>

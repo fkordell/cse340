@@ -156,15 +156,6 @@ async function editAccount(req, res, next) {
   const accountTypeSelect = await utilities.updateAccountType()
   const accountData = await accountModel.getAccountById(account_id);
 
-  // if (accountData) {
-  //   const accountTypesResult = await accountModel.getAccountType();
-  //   let accountTypeSelect = '<select name="account_type">'; 
-  //   accountTypesResult.rows.forEach((type) => {
-  //     let isSelected = type.account_type === accountData.account_type ? ' selected' : '';
-  //     accountTypeSelect += `<option value="${type.account_type}"${isSelected}>${type.account_type}</option>`;
-  //   });
-  //   accountTypeSelect += '</select>';
-
     res.render("account/update", {
       title: "Edit Account",
       nav,
@@ -175,14 +166,7 @@ async function editAccount(req, res, next) {
       account_id: account_id,
       accountTypeSelect, 
     });
-//   } else {
-//     req.flash("notice", "sorry unable to update your information, please try logging in again");
-//     res.status(501).render("account/login", {
-//       title: "Login",
-//       nav,
-//       errors: null,
-//     });
-//   }
+
 }
 
 
@@ -291,37 +275,78 @@ async function getAccountsByType(req, res) {
 /* ***************************
  *  This is the function to update the account type
  * ************************** */
-async function updateAccountType(req, res, next) {
-  let nav = await utilities.getNav();
-  const { account_id, account_type } = req.body;
-  const updateResult = await accountModel.updateAccountType(
-    account_id,
-    account_type,
-  );
 
-  if(updateResult){
-    utilities.deleteJwt
-    const accountData = await accountModel.getAccountById(account_id)
-    accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 3600 * 1000})
-    res.cookie("jwt", accessToken, {httpOnly: true})
-    req.flash("notice", `Congrats ${account_firstname}, the account type was successfully updated! `)
-    res.redirect("/account/")
+async function updateAccountTypeInfo(req, res) {
+  try {
+    let nav = await utilities.getNav();
+    const { account_id, account_type } = req.body; 
+    console.log("Updating account type:", account_type, "for account ID:", account_id);
+
+    const updateResult = await accountModel.updateAccountType(account_id, account_type);
+    if (updateResult) {
+      console.log("Update successful:", updateResult);
+      res.redirect("/account/successPage"); 
+    } else {
+      console.log("Update failed. No records updated.");
+      res.status(400).send("Update failed.");
+    }
+  } catch (error) {
+    console.error("Error during account type update:", error);
+    res.status(500).send("Server error");
   }
-  else{
-    const accountData = await accountModel.getAccountById(account_id)
-    req.flash("notice", "Sorry we could not update the account type.")
-    res.status(501).render("account/update", {
-    title: "Edit Account Type",
-    nav,
+}
+
+
+
+// async function updateAccountTypeInfo(req, res, next) {
+//   let nav = await utilities.getNav();
+//   const { account_id, account_type } = req.body;
+//   const updateResult = await accountModel.updateAccountType(
+//     account_id,
+//     account_type,
+//   );
+
+//   if(updateResult){
+//     utilities.deleteJwt
+//     const accountData = await accountModel.getAccountById(account_id)
+//     accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 3600 * 1000})
+//     res.cookie("jwt", accessToken, {httpOnly: true})
+//     req.flash("notice", `Congrats ${account_firstname}, the account type was successfully updated! `)
+//     res.redirect("/account/")
+//   }
+//   else{
+//     const accountData = await accountModel.getAccountById(account_id)
+//     req.flash("notice", "Sorry we could not update the account type.")
+//     res.status(501).render("account/update", {
+//     title: "Edit Account Type",
+//     nav,
+//     errors: null,
+//     account_type : accountData.account_type,
+//     account_id: account_id,
+//     })
+//   }
+// }
+
+
+async function updateAccountType(req, res) {
+  const account_id = parseInt(req.params.account_id);
+  let nav = await utilities.getNav();
+  const accountData = await accountModel.getAccountById(account_id);
+  if (!accountData) {
+      throw new Error('Account not found');
+  }
+  const accountTypeSelect = await utilities.updateAccountType();
+  const accountName = `${accountData.account_firstname} ${accountData.account_lastname}`;
+  res.render("./account/updateAccountType", {
+    title: "Edit " + accountName,
+    nav, 
+    accountTypeSelect: accountTypeSelect,
     errors: null,
-    account_type : accountData.account_type,
-    account_id: account_id,
-    })
-  }
+  })
 }
 
 
 
 
   
-  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword, updateAccountType, getAccountsByType }
+  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword, updateAccountTypeInfo, updateAccountType, getAccountsByType }

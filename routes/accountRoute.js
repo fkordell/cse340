@@ -35,25 +35,13 @@ router.post("/updatePassword", regValidate.passwordValidation(), regValidate.che
 //route to work with accountUpdate.js file
 router.get("/getAccountsByType/:account_type", utilities.checkaccountType, utilities.handleErrors(accountController.getAccountsByType));
 
-// //route for getting accounts by type
-// router.get("/updateAccountType", accountController.getAccountsByType)
+router.get("/updateAccountType/:account_id", utilities.handleErrors(accountController.updateAccountType))
 
-
-//still confused
-//need controller info
-//need help
-
-//route to post to update the account type
-router.post("/updateType", utilities.handleErrors(accountController.checkAccountUpdate))
-
-//route to work with accountUpdate.js file
-//router.get("/getInventory/:classification_id", utilities.handleErrors(invCont.getInventoryJSON))
-//route to edit account user info
-//router.get("/edit/:inv_id", utilities.handleErrors(invCont.editInv))
-//router.post("/update/",invValidate.invRules(), invValidate.checkUpdateData, invController.updateInv.updateInventory)
-// New Route to delete an account user
-//router.get("/delete/:inv_id", utilities.handleErrors(invCont.deleteInv))
-//router.post("/delete/", utilities.handleErrors(invCont.deleteInventory))
+// router.post("/updateAccountType", utilities.handleErrors(accountController.updateAccountTypeInfo))
+router.post("/updateAccountType", (req, res) => {
+    console.log("Request Body:", req.body);
+    res.send("Route is working");
+  });
 
 
 module.exports = router;
