@@ -121,7 +121,7 @@ async function getAccountsByType(account_type) {
 //This will update the account type
 async function updateAccountType(account_id, account_type) {
   const query = 'UPDATE account SET account_type = $1 WHERE account_id = $2 RETURNING *';
-  const values = [account_id, account_type];
+  const values = [account_type, account_id];
   console.log("Executing query:", query, "Values:", values);
   try {
     const result = await pool.query(query, values);

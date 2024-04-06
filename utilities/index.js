@@ -109,7 +109,7 @@ Util.addInventoryForm = async function (req, res, next) {
 * ************************************ */
 Util.updateAccountType = async function (req, res, next) {
   let data = await accModel.getAccountType()
-  let form = '<select id="accountTypeSelect" name="account_id" required >'
+  let form = '<select id="accountTypeSelect" name="account_type" required >'
   form += '<option value =""> Please select an account type </option>'
   data.rows.forEach((row) => {
     form += '<option value="'+row.account_type + '">'

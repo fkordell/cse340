@@ -25,7 +25,7 @@
           <label for="accountTypeSelect">Account Type:</label>
           <%- accountTypeSelect %>
           <button type="submit" disabled value="Update Account">Update</button>
-          <input type="hidden" name="account_id"<% if(locals.account_type) { %> value="<%= locals.account_type %>" <% } %> >
+          <input type="hidden" name="account_id"<% if(locals.account_id) { %> value="<%= locals.account_id %>" <% } %> >
         </fieldset>
     </form>
 </div>

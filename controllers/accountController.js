@@ -274,17 +274,10 @@ async function getAccountsByType(req, res) {
 /* ***************************
  * Update Account Type Data
  * ************************** */
-async function updateAccountType(req, res) {
-  console.log("Received account_id:", req.body.account_id);
-  console.log("Received account_type:", req.body.account_type);
-  console.log("URL Parameters:", req.params);
+async function updateAccountTypePage(req, res) {
   let nav = await utilities.getNav();
-  const account_id = parseInt(req.params.account_id, 10); 
+  const account_id = req.params.account_id
   console.log("Parsed account_id:", account_id);
-  const { account_type } = req.body; 
-
-  console.log("Parsed account_id:", account_id);
-  console.log("Received account_type:", account_type);
   try {
     const accountData = await accountModel.getAccountById(account_id);
     if (!accountData) {
@@ -296,20 +289,15 @@ async function updateAccountType(req, res) {
             errors: null,
         });
       }
-    const updateResult = await accountModel.updateAccountType(account_id, account_type);
-    if (updateResult) {
-        req.flash("notice", `Account type updated to ${account_type} successfully.`);
-        res.redirect("/account/"); 
-    } else {
-        req.flash("error", "Failed to update account type.");
-        res.status(400).render("account/updateAccountType", {
-            title: "Update Account Type",
-            nav,
-            accountTypeSelect: await utilities.updateAccountType(),
-            account: accountData,
-            errors: null,
-        });
-    }
+      return res.render("account/updateAccountType", {
+        title: "Update Account Type",
+        nav,
+        accountTypeSelect: await utilities.updateAccountType(),
+        account_id: account_id,
+        account: accountData,
+        errors: null,
+      })
+      
   } catch (error) {
       console.error('Update Account Type Error:', error);
       req.flash("error", "Server error during account type update.");
@@ -322,6 +310,26 @@ async function updateAccountType(req, res) {
   }
 }
 
+async function updateAccountTypeForm (req, res) {
+  let nav = await utilities.getNav();
+  const account_id = parseInt(req.body.account_id, 10); 
+  const account_type  = req.body.account_type; 
+  console.log(account_type)
+  const updateResult = await accountModel.updateAccountType(account_id, account_type);
+  if (updateResult) {
+    req.flash("notice", `Account type updated to ${account_type} successfully.`);
+    res.redirect("/account/"); 
+} else {
+    req.flash("error", "Failed to update account type.");
+    res.status(400).render("account/updateAccountType", {
+        title: "Update Account Type",
+        nav,
+        accountTypeSelect: await utilities.updateAccountType(),
+        account: accountData,
+        errors: null,
+    });
+}
+}
 
 /* ***************************
  *  Build delete account view
@@ -412,7 +420,7 @@ async function updateAfterDelete (req, res, next) {
   }
 }
   
-  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword, updateAccountType, getAccountsByType, accountDelete, updateAfterDelete }
+  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword, updateAccountTypePage, updateAccountTypeForm, getAccountsByType, accountDelete, updateAfterDelete }
 
 
 
