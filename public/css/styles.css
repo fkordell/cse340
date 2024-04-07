@@ -296,6 +296,12 @@ textarea:invalid{
   margin: 10px;
   padding: 10px;
 }
+#deleteAcc{
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  padding: 10px;
+}
 footer  a{
   color: black;
 }

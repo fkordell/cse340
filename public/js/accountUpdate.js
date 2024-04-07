@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
      console.log(element.account_firstname + ", " + element.account_lastname); 
      dataTable += `<tr><td>${element.account_firstname} ${element.account_lastname}</td>`; 
      dataTable += `<td><a href='/account/updateAccountType/${element.account_id}' title='Click to update'>Modify</a></td>`; 
-     dataTable += `<td><a href='/account/delete/${element.account_id}' title='Click to delete'>Delete</a></td></tr>`; 
+     dataTable += `<td><a href='/account/accDelete-confirm/${element.account_id}' title='Click to delete'>Delete</a></td></tr>`; 
     }) 
     dataTable += '</tbody>'; 
     // Display the contents in the Account type view 

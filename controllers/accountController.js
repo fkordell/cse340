@@ -312,7 +312,7 @@ async function updateAccountTypePage(req, res) {
 
 async function updateAccountTypeForm (req, res) {
   let nav = await utilities.getNav();
-  const account_id = parseInt(req.body.account_id, 10); 
+  const account_id = parseInt(req.body.account_id); 
   const account_type  = req.body.account_type; 
   console.log(account_type)
   const updateResult = await accountModel.updateAccountType(account_id, account_type);
@@ -334,62 +334,47 @@ async function updateAccountTypeForm (req, res) {
 /* ***************************
  *  Build delete account view
  * ************************** */
-async function accountDelete (req, res, next) {
-  const account_id = parseInt(req.params.account_id)
-  let nav = await utilities.getNav()
-
-  const accountData = await accountModel.getAccountById(account_id)
-  const accountTypeSelect = await utilities.updateAccountType()
-
-  const accountName = `${accountData[0].account_firstname} ${accountData[0].account_lastname}`
-
-  res.render("./account/delete-confirm", {
-    title: "Delete " + accountName,
-    nav,
-    accountTypeSelect: accountTypeSelect,
-    errors: null,
-    account_id: accountData[0].account_id,
-    account_firstname: accountData[0].account_firstname,
-    account_lastname: accountData[0].account_lastname,
-    account_email: accountData[0].account_email,
-    account_password: accountData[0].account_password,
-    account_id_id: accountData[0].account_id
-  })
+async function accountDeletePage(req, res) {
+  const account_id = req.params.account_id;
+  let nav = await utilities.getNav();
+  try {
+      const accountData = await accountModel.getAccountById(account_id);
+      if (!accountData) {
+          req.flash("error", "Account not found.");
+          return res.status(404).render("account/", {
+              title: "Error",
+              message: "Account not found",
+              nav,
+              errors: req.flash('error'),
+          });
+      }
+      return res.render("account/accDelete-confirm", {
+          title: "Delete Account",
+          nav,
+          account_id: account_id,
+          accountData: accountData,
+          errors: null,
+      });
+  } catch (error) {
+      console.error('Error fetching account data:', error);
+      req.flash("error", "Server error during account data retrieval.");
+      return res.status(500).render("account/", {
+          title: "Server Error",
+          message: "An error occurred while fetching account details.",
+          nav,
+          errors: req.flash('error')
+      });
+  }
 }
 
-/* ***************************
- *  Build delete account view
- * ************************** */
-async function accountDelete (req, res, next) {
-  const account_id = parseInt(req.params.account_id)
-  let nav = await utilities.getNav()
-
-  const accountData = await accountModel.getAccountById(account_id)
-  const accountTypeSelect = await utilities.updateAccountType()
-
-  const accountName = `${accountData[0].account_firstname} ${accountData[0].account_lastname}`
-
-  res.render("./account/delete-confirm", {
-    title: "Delete " + accountName,
-    nav,
-    accountTypeSelect: accountTypeSelect,
-    errors: null,
-    account_id: accountData[0].account_id,
-    account_firstname: accountData[0].account_firstname,
-    account_lastname: accountData[0].account_lastname,
-    account_email: accountData[0].account_email,
-    account_password: accountData[0].account_password,
-    account_id_id: accountData[0].account_id
-  })
-}
 
 /* ***************************
  *  Update Account Data after deletion
  * ************************** */
 async function updateAfterDelete (req, res, next) {
   let nav = await utilities.getNav()
+  const account_id = parseInt(req.body.account_id);
   const {
-    account_id,
     account_firstname,
     account_lastname,
     account_email,
@@ -420,7 +405,7 @@ async function updateAfterDelete (req, res, next) {
   }
 }
   
-  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword, updateAccountTypePage, updateAccountTypeForm, getAccountsByType, accountDelete, updateAfterDelete }
+  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, loggedIn, editAccount, updateAccount, updatePassword, updateAccountTypePage, updateAccountTypeForm, getAccountsByType, accountDeletePage, updateAfterDelete }
 
 
 

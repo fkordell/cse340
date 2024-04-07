@@ -133,9 +133,19 @@ async function updateAccountType(account_id, account_type) {
   }
 }
 
+async function deleteAccount(account_id) {
+  try {
+    const sql = 'DELETE FROM account WHERE inv_id = $1'
+    const data = await pool.query(sql, [account_id])
+  return data
+  } catch (error) {
+    new Error("Delete Inventory Error")
+  }
+}
 
 
 
 
-module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, getAccountInfo, updateAcc, updatePassword, getAccountType, updateAccountType, getAccountsByType}
+
+module.exports = {registerAccount, checkExistingEmail, getAccountByEmail, getAccountById, getAccountInfo, updateAcc, updatePassword, getAccountType, updateAccountType, getAccountsByType, deleteAccount}
 

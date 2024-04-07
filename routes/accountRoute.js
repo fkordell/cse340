@@ -41,9 +41,11 @@ router.get("/updateAccountType/:account_id", utilities.handleErrors(accountContr
 router.post("/updateAccountType", utilities.handleErrors(accountController.updateAccountTypeForm))
 
 //get route to delete an account
-router.get("/delete/:account_id", utilities.handleErrors(accountController.accountDelete))
+router.get("/accDelete-confirm/:account_id", utilities.handleErrors(accountController.accountDeletePage))
 
 //route to update the db after deletion
-router.post("/delete/", utilities.handleErrors(accountController.updateAfterDelete))
+router.post("/accDelete-confirm", utilities.handleErrors(accountController.updateAfterDelete))
+
+
 
 module.exports = router;
